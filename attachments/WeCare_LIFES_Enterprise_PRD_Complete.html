@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeCare LIFES — Complete Enterprise Product Requirements Document</title>
+  <style>
+    :root {
+      --primary: #1B4F72;
+      --secondary: #2874A6;
+      --accent: #148F77;
+      --warning: #B7950B;
+      --danger: #922B21;
+      --bg: #F4F6F7;
+      --card: #FFFFFF;
+      --text: #1C2833;
+      --muted: #5D6D7E;
+      --border: #D5D8DC;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px 18px 90px; }
+    
+    .doc-header {
+      background: linear-gradient(135deg, #1B4F72 0%, #148F77 100%);
+      color: white;
+      padding: 40px 32px;
+      border-radius: 12px;
+      margin-bottom: 28px;
+      box-shadow: 0 6px 24px rgba(27,79,114,0.3);
+    }
+    .doc-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .doc-header .subtitle { font-size: 17px; opacity: 0.93; margin-bottom: 20px; }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+      font-size: 13.5px;
+    }
+    .meta-item {
+      background: rgba(255,255,255,0.13);
+      padding: 9px 13px;
+      border-radius: 6px;
+    }
+    .meta-item strong {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      opacity: 0.8;
+      letter-spacing: 0.4px;
+      margin-bottom: 2px;
+    }
+
+    nav.toc {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px 26px;
+      margin-bottom: 30px;
+    }
+    nav.toc h2 { font-size: 16px; color: var(--primary); margin-bottom: 14px; }
+    nav.toc ol { padding-left: 22px; columns: 2; column-gap: 28px; }
+    nav.toc li { margin-bottom: 7px; font-size: 13.5px; break-inside: avoid; }
+    nav.toc a { color: var(--secondary); text-decoration: none; }
+    nav.toc a:hover { text-decoration: underline; color: var(--primary); }
+
+    section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 28px 26px;
+      margin-bottom: 22px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.04);
+    }
+    h2 {
+      font-size: 20px;
+      color: var(--primary);
+      border-bottom: 2px solid #D4E6F1;
+      padding-bottom: 9px;
+      margin-bottom: 18px;
+    }
+    h3 { font-size: 16.5px; color: var(--secondary); margin: 22px 0 11px; }
+    h4 { font-size: 14.5px; color: var(--text); margin: 16px 0 8px; }
+    p { margin-bottom: 11px; }
+    ul, ol { margin: 8px 0 14px 22px; }
+    li { margin-bottom: 5px; }
+
+    .callout {
+      background: #EBF5FB;
+      border-left: 4px solid var(--secondary);
+      padding: 13px 16px;
+      margin: 14px 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 14.5px;
+    }
+    .callout.success { background: #E8F8F5; border-left-color: var(--accent); }
+    .callout.warning { background: #FEF9E7; border-left-color: var(--warning); }
+    .callout.danger { background: #FDEDEC; border-left-color: var(--danger); }
+    .quote {
+      font-style: italic;
+      color: var(--muted);
+      border-left: 3px solid #AED6F1;
+      padding-left: 14px;
+      margin: 12px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 18px;
+      font-size: 13.5px;
+    }
+    th {
+      background: var(--primary);
+      color: white;
+      text-align: left;
+      padding: 9px 11px;
+      font-weight: 600;
+    }
+    td {
+      padding: 9px 11px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: #F4F6F7; }
+    tr:hover td { background: #EBF5FB; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+    .badge-p0 { background: #F5B7B1; color: #7B241C; }
+    .badge-p1 { background: #F9E79F; color: #7D6608; }
+    .badge-p2 { background: #D5F5E3; color: #145A32; }
+    .badge-p3 { background: #D6EAF8; color: #1A5276; }
+    .badge-phase1 { background: #D4E6F1; color: #1A5276; }
+    .badge-phase2 { background: #D5F5E3; color: #145A32; }
+    .badge-phase3 { background: #FCF3CF; color: #7D6608; }
+    .badge-phase4 { background: #F5B7B1; color: #7B241C; }
+    .badge-critical { background: #F5B7B1; color: #7B241C; }
+    .badge-high { background: #F9E79F; color: #7D6608; }
+    .badge-med { background: #D5F5E3; color: #145A32; }
+
+    .phase-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin: 12px 0;
+      background: #FDFEFE;
+    }
+    .phase-card h4 { margin: 0 0 8px; }
+    .workflow {
+      background: #1C2833;
+      color: #EAECEE;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 12.2px;
+      padding: 16px 18px;
+      border-radius: 8px;
+      overflow-x: auto;
+      white-space: pre;
+      line-height: 1.45;
+      margin: 12px 0;
+    }
+    .decision-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 11px;
+      margin: 12px 0;
+    }
+    .decision-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 15px;
+      background: #FDFEFE;
+    }
+    .decision-card h4 { margin: 0 0 6px; color: var(--primary); }
+
+    .score-box {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: #1C2833;
+      color: white;
+      padding: 18px 22px;
+      border-radius: 10px;
+      margin: 16px 0;
+    }
+    .score-number {
+      font-size: 42px;
+      font-weight: 700;
+      color: #58D68D;
+    }
+    .score-label { font-size: 14px; opacity: 0.85; }
+
+    .doc-footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 22px;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 720px) {
+      nav.toc ol { columns: 1; }
+      .meta-grid { grid-template-columns: 1fr 1fr; }
+      .doc-header h1 { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="doc-header">
+    <h1>WeCare LIFES — Complete Enterprise Product Requirements Document</h1>
+    <div class="subtitle">Doctor OS Lite + WeCare Pocket · Full Phase Coverage · End-to-End Specification</div>
+    <div class="meta-grid">
+      <div class="meta-item"><strong>Company</strong> citrus</div>
+      <div class="meta-item"><strong>Product Suite</strong> WeCare LIFES</div>
+      <div class="meta-item"><strong>Products</strong> Doctor OS Lite · WeCare Pocket</div>
+      <div class="meta-item"><strong>Version</strong> 3.0 Complete Enterprise</div>
+      <div class="meta-item"><strong>Date</strong> 31 July 2026</div>
+      <div class="meta-item"><strong>Owner</strong> Abhishek Jaiswal, Founder & CEO</div>
+      <div class="meta-item"><strong>Status</strong> Source-of-Truth PRD</div>
+      <div class="meta-item"><strong>Scope</strong> All Phases 1–4</div>
+    </div>
+  </header>
+
+  <div class="callout success">
+    <strong>Document Purpose:</strong> This is the single authoritative Product Requirements Document for WeCare LIFES. 
+    It consolidates the Provider PRD, Consumer PRD, Enterprise Specification, completeness audit, and original vision into one end-to-end specification covering every phase.
+  </div>
+
+  <!-- ==================== TOC ==================== -->
+  <nav class="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li><a href="#s1">Executive Overview & Vision</a></li>
+      <li><a href="#s2">Product Boundaries & Phased Scope</a></li>
+      <li><a href="#s3">Stakeholders & User Segments</a></li>
+      <li><a href="#s4">Jobs To Be Done</a></li>
+      <li><a href="#s5">End-to-End Journeys</a></li>
+      <li><a href="#s6">Phase 1 — Primary Care Foundation (Doctor OS Lite)</a></li>
+      <li><a href="#s7">Phase 2 — Patient Continuity Layer (WeCare Pocket)</a></li>
+      <li><a href="#s8">Phase 3 — Secondary Care & Ecosystem</a></li>
+      <li><a href="#s9">Phase 4 — Tertiary & National Scale</a></li>
+      <li><a href="#s10">Shared Data Model & Domain Entities</a></li>
+      <li><a href="#s11">AI System Requirements & Guardrails</a></li>
+      <li><a href="#s12">Offline-First Architecture</a></li>
+      <li><a href="#s13">API Surface & Integrations</a></li>
+      <li><a href="#s14">Security, Identity & Access Control</a></li>
+      <li><a href="#s15">Compliance Requirements</a></li>
+      <li><a href="#s16">Business Model & Pricing</a></li>
+      <li><a href="#s17">Analytics & Success Metrics</a></li>
+      <li><a href="#s18">Non-Functional Requirements</a></li>
+      <li><a href="#s19">Risk Register</a></li>
+      <li><a href="#s20">Implementation Order & Companion Documents</a></li>
+      <li><a href="#s21">Completeness Score & Unified Recommendation</a></li>
+    </ol>
+  </nav>
+
+  <!-- ==================== 1 ==================== -->
+  <section id="s1">
+    <h2>1. Executive Overview & Vision</h2>
+
+    <h3>Strategic Vision</h3>
+    <p>WeCare LIFES is a two-sided ambulatory healthcare operating system for independent and small multi-doctor clinics in semi-urban and Tier-2/3 India, with a connected patient and caregiver product that turns doctor-approved clinical notes into longitudinal health continuity.</p>
+
+    <p><strong>Doctor OS Lite</strong> reduces documentation burden, works reliably under poor connectivity, and closes billing leakage through a voice-first consultation-to-billing loop.</p>
+    <p><strong>WeCare Pocket</strong> is the patient’s health passport. It automatically receives visit summaries, prescriptions, reminders, receipts, and caregiver visibility without requiring the patient to manually enter medical data.</p>
+
+    <h3>Product Mission</h3>
+    <div class="callout">
+      Help a doctor say within 14 days: “This software saved me time today.”<br>
+      Help a patient say: “The system remembered what the clinic previously forgot.”
+    </div>
+
+    <h3>Positioning</h3>
+    <ul>
+      <li>Doctor OS Lite competes against paper, WhatsApp, memory, and abandoned EMR software — not against full hospital HIS systems.</li>
+      <li>WeCare Pocket competes against fragmented paper prescriptions and disorganized WhatsApp chats — not against consumer marketplaces.</li>
+      <li>The combined system is a <strong>healthcare coordination platform</strong>, not a pure telemedicine app.</li>
+    </ul>
+
+    <h3>Core Design Principles</h3>
+    <ul>
+      <li>Voice-first, not form-first</li>
+      <li>Offline-first for the core provider loop</li>
+      <li>Doctor approval gates all clinical content shown to patients</li>
+      <li>Shared source of truth across provider and consumer systems</li>
+      <li>Privacy by design, with auditable access and revocable sharing</li>
+      <li>Interoperability readiness (FHIR-aligned, optional ABHA)</li>
+      <li>Low training cost — if a doctor needs more than one day to feel productive, the product has failed</li>
+    </ul>
+  </section>
+
+  <!-- ==================== 2 ==================== -->
+  <section id="s2">
+    <h2>2. Product Boundaries & Phased Scope</h2>
+
+    <h3>Phase Overview</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Care Level</th>
+          <th>Timeframe</th>
+          <th>Primary Focus</th>
+          <th>Unlock Condition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-phase1">Phase 1</span></td>
+          <td>Primary (Foundation)</td>
+          <td>0–12 months</td>
+          <td>Doctor OS Lite + WhatsApp patient delivery</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-phase2">Phase 2</span></td>
+          <td>Patient Continuity</td>
+          <td>12–24 months</td>
+          <td>WeCare Pocket + caregiver mode</td>
+          <td>≥50 retained clinics, ARR &gt; ₹1.5 Cr, churn &lt; 20%</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-phase3">Phase 3</span></td>
+          <td>Secondary + Ecosystem</td>
+          <td>24–36 months</td>
+          <td>Diagnostics &amp; pharmacy routing, lab ingestion, specialist booking</td>
+          <td>≥500 clinics, 10k+ active patients, Series A</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-phase4">Phase 4</span></td>
+          <td>Tertiary + National</td>
+          <td>36–60 months</td>
+          <td>Home visits, insurance facilitation, NFC, ASHA, employers, foreign corridor</td>
+          <td>≥5,000 clinics, 1M+ patients, Series B</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Explicitly Out of Scope Until Stated Phase</h3>
+    <ul>
+      <li>Full hospital-grade HIS (inpatient, pharmacy inventory, lab management) — never core</li>
+      <li>Mandatory ABHA usage — always optional</li>
+      <li>Self-entered medical history by patients — never allowed as primary source</li>
+      <li>Autonomous AI diagnosis or treatment recommendation — permanently prohibited</li>
+      <li>Patient discovery / doctor search marketplace — different product</li>
+      <li>NFC hardware — Phase 4 only</li>
+      <li>Home-visit doctor dispatch network — Phase 4</li>
+      <li>Full insurance claims engine — Phase 4</li>
+      <li>Emergency SOS / triage system — different product</li>
+    </ul>
+  </section>
+
+  <!-- ==================== 3 ==================== -->
+  <section id="s3">
+    <h2>3. Stakeholders & User Segments</h2>
+
+    <h3>Stakeholder Matrix</h3>
+    <table>
+      <thead>
+        <tr><th>Role</th><th>Who</th><th>Core Question</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Economic buyer</td><td>Clinic owner</td><td>Does this increase throughput and collections?</td></tr>
+        <tr><td>Daily user</td><td>Practicing doctor</td><td>Does this reduce typing and keep my attention on the patient?</td></tr>
+        <tr><td>Operations user</td><td>Front desk</td><td>Does registration and billing become simpler?</td></tr>
+        <tr><td>Primary beneficiary</td><td>Patient</td><td>What did the doctor say, what do I take, when is the next step?</td></tr>
+        <tr><td>Secondary beneficiary</td><td>Family caregiver</td><td>Can I see status without relying on incomplete memory?</td></tr>
+        <tr><td>Compliance</td><td>DPDP / NMC / CDSCO</td><td>Is processing controlled, auditable, and non-diagnostic?</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Core Provider Segment</h3>
+    <p>Independent or small multi-doctor clinic (1–5 doctors) in semi-urban / Tier-2–3 India. 20–50 patients per doctor per morning OPD. Current tools: paper, WhatsApp, memory. High prior EMR abandonment rate.</p>
+
+    <h3>Core Consumer Segment</h3>
+    <p>25–65 year old patient with WhatsApp + UPI familiarity, limited English, frequent chronic-care visits. Secondary high-value segment: remote adult child managing parent health across cities.</p>
+  </section>
+
+  <!-- ==================== 4 ==================== -->
+  <section id="s4">
+    <h2>4. Jobs To Be Done</h2>
+
+    <h3>Doctor OS Lite</h3>
+    <div class="decision-grid">
+      <div class="decision-card"><h4>JTBD-P1</h4><p>Surface previous patient context instantly at the moment of consultation.</p></div>
+      <div class="decision-card"><h4>JTBD-P2</h4><p>Capture natural spoken consultation without forcing typing.</p></div>
+      <div class="decision-card"><h4>JTBD-P3</h4><p>Convert consultation into an editable SOAP draft fast enough for live OPD flow.</p></div>
+      <div class="decision-card"><h4>JTBD-P4</h4><p>Approve the note once and automatically trigger downstream billing.</p></div>
+      <div class="decision-card"><h4>JTBD-P5</h4><p>Preserve the entire consultation loop when connectivity fails.</p></div>
+      <div class="decision-card"><h4>JTBD-P6</h4><p>See daily operational reality (volume, note completion, billing closure) at a glance.</p></div>
+    </div>
+
+    <h3>WeCare Pocket</h3>
+    <div class="decision-grid">
+      <div class="decision-card"><h4>JTBD-C1</h4><p>Receive a clear patient-readable version of the visit without memory reconstruction.</p></div>
+      <div class="decision-card"><h4>JTBD-C2</h4><p>Keep prescriptions, receipts, and follow-up guidance in one place.</p></div>
+      <div class="decision-card"><h4>JTBD-C3</h4><p>Receive medication and follow-up reminders automatically from the approved record.</p></div>
+      <div class="decision-card"><h4>JTBD-C4</h4><p>Allow caregivers to understand status and upcoming obligations remotely.</p></div>
+      <div class="decision-card"><h4>JTBD-C5</h4><p>Enable longitudinal history access and later portability (PDF / FHIR).</p></div>
+    </div>
+  </section>
+
+  <!-- ==================== 5 ==================== -->
+  <section id="s5">
+    <h2>5. End-to-End Journeys</h2>
+
+    <h3>Journey 1 — New Patient Consultation (Phase 1)</h3>
+    <div class="workflow">1. Patient arrives → Front desk enters mobile number
+2. System searches existing profile + duplicate heuristics
+3. If no valid consent → OTP-based consent capture (includes AI disclosure)
+4. Patient placed in queue
+5. Doctor opens patient context screen (cached if offline)
+6. Doctor starts voice capture → performs consultation
+7. AI generates SOAP draft + patient_summary draft
+8. Doctor reviews, edits, approves (one tap)
+9. System stores immutable record + structured prescription
+10. Bill auto-created and routed to front desk
+11. Prescription + receipt delivered to patient via WhatsApp</div>
+
+    <h3>Journey 2 — Returning Patient Follow-up</h3>
+    <p>Doctor sees prior approved record instantly. Patient does not re-tell the full story. Updated summary, prescription, and reminders are delivered automatically after approval.</p>
+
+    <h3>Journey 3 — Remote Caregiver (Phase 2)</h3>
+    <p>Caregiver links only after explicit patient authorization. Views current medications, latest summary, next follow-up, and adherence events within granted scope. Access is revocable at any time.</p>
+
+    <h3>Journey 4 — Offline Consultation Recovery</h3>
+    <p>Core loop (context, record, draft, approve, bill event) continues on device. On reconnect, events sync in sequence. Conflicts surface for manual resolution — never silent overwrite.</p>
+  </section>
+
+  <!-- ==================== 6 PHASE 1 ==================== -->
+  <section id="s6">
+    <h2>6. Phase 1 — Primary Care Foundation (Doctor OS Lite)</h2>
+    <p><span class="badge badge-phase1">0–12 months</span> · One city cluster · Independent clinics</p>
+
+    <h3>6.1 Core Feature Set (P0 — Must Ship)</h3>
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Feature</th><th>Acceptance Direction</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-p0">F1</span></td>
+          <td><strong>Patient context — one screen</strong></td>
+          <td>Name, age, blood group, allergies, current meds, last 3 visit summaries. Load &lt; 2 s. Offline available.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-p0">F2</span></td>
+          <td><strong>Voice recording</strong></td>
+          <td>Start / pause / resume / stop. Visible pulse state. Offline buffering. Start &lt; 1 s.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-p0">F3</span></td>
+          <td><strong>Voice → SOAP draft</strong></td>
+          <td>15–30 s generation. Low-confidence sections highlighted. AI does not diagnose.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-p0">F4</span></td>
+          <td><strong>Review &amp; Approve</strong></td>
+          <td>One-tap finalization. Creates immutable clinical record with doctor ID + timestamp.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-p0">F5</span></td>
+          <td><strong>Automatic bill generation</strong></td>
+          <td>Bill appears on front-desk side within 2 s of approval.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-p0">F6</span></td>
+          <td><strong>Offline core workflow</strong></td>
+          <td>F1–F5 fully usable without network. Auto-sync on reconnect.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>6.2 P1 Features (First Release Recommended)</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Feature</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-p1">F7</span></td><td>Multi-clinic switch</td><td>Up to 3 clinic contexts; records isolated by clinic</td></tr>
+        <tr><td><span class="badge badge-p1">F8</span></td><td>Patient search</td><td>Fuzzy by name / mobile; &lt; 1 s</td></tr>
+        <tr><td><span class="badge badge-p1">F9</span></td><td>Visit history</td><td>Last 10 visits + approved SOAP notes</td></tr>
+      </tbody>
+    </table>
+
+    <h3>6.3 Mandatory Enterprise Additions (Phase 1)</h3>
+    <ul>
+      <li>Doctor onboarding must verify NMC registration before note approval is enabled.</li>
+      <li>Prescription must be a structured entity (generic, brand, strength, frequency, duration, route, caution, signature).</li>
+      <li>Approved records maintain version history; corrections only via formal addendum.</li>
+      <li>Voice capture survives call interrupt, backgrounding, mic permission loss, battery saver.</li>
+      <li>Front-desk users never see full SOAP unless explicitly granted a clinical role.</li>
+      <li>Consent captured by OTP with explicit AI-processing disclosure.</li>
+      <li>patient_summary field generated synchronously at approval time (even if not shown to patient yet).</li>
+    </ul>
+
+    <h3>6.4 Front Desk Requirements</h3>
+    <table>
+      <thead><tr><th>Module</th><th>Requirement</th></tr></thead>
+      <tbody>
+        <tr><td>Registration</td><td>Phone number primary lookup + fuzzy duplicate detection</td></tr>
+        <tr><td>Consent</td><td>OTP-based explicit consent with purpose, categories, AI disclosure, retention</td></tr>
+        <tr><td>Queue</td><td>Walk-in, scheduled, in-progress, completed, cancelled, no-show</td></tr>
+        <tr><td>Billing</td><td>Line-item masters per clinic/doctor; cash / UPI / card</td></tr>
+        <tr><td>Receipt</td><td>WhatsApp delivery + printable PDF</td></tr>
+        <tr><td>Day close</td><td>Collections, payment-mode mix, pending bills, exceptions</td></tr>
+      </tbody>
+    </table>
+
+    <h3>6.5 Phase 1 Success Metrics (14-day pilot)</h3>
+    <table>
+      <thead><tr><th>Metric</th><th>Target</th></tr></thead>
+      <tbody>
+        <tr><td>Documentation time reduction</td><td>≥ 20 minutes per OPD</td></tr>
+        <tr><td>Same-day note completion rate</td><td>≥ 80%</td></tr>
+        <tr><td>Billing closure rate</td><td>≥ 90%</td></tr>
+        <tr><td>Doctor daily active</td><td>≥ 70% of days</td></tr>
+        <tr><td>“I will continue paying because…”</td><td>≥ 3 of first 5 clinics</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ==================== 7 PHASE 2 ==================== -->
+  <section id="s7">
+    <h2>7. Phase 2 — Patient Continuity Layer (WeCare Pocket)</h2>
+    <p><span class="badge badge-phase2">12–24 months</span> · Unlocked after ≥50 retained clinics</p>
+
+    <h3>7.1 Phase 0 Bridge (already in Phase 1)</h3>
+    <p>WhatsApp delivery of prescription and receipt. Builds the habit “my records arrive on my phone” before the full app.</p>
+
+    <h3>7.2 Core Consumer Features (P0)</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Feature</th><th>Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-p0">C1</span></td><td>Visit summary push</td><td>Patient-friendly 2–3 sentence summary after doctor approval</td></tr>
+        <tr><td><span class="badge badge-p0">C2</span></td><td>Prescription management</td><td>Digital Rx with dose, duration, side-effect notes</td></tr>
+        <tr><td><span class="badge badge-p0">C3</span></td><td>Medication reminders</td><td>Auto-created from prescription schedule; supports taken/skipped/snoozed/missed</td></tr>
+        <tr><td><span class="badge badge-p0">C4</span></td><td>Follow-up reminders</td><td>From SOAP Plan section; 3-day advance notice</td></tr>
+        <tr><td><span class="badge badge-p0">C5</span></td><td>Visit history</td><td>Chronological list of visits, diagnoses, prescriptions, doctors</td></tr>
+        <tr><td><span class="badge badge-p0">C6</span></td><td>Consent management</td><td>View access history, scope, and withdraw consent</td></tr>
+      </tbody>
+    </table>
+
+    <h3>7.3 P1 Consumer Features</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Feature</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-p1">C7</span></td><td>Family health management</td><td>Caregiver manages up to 5 members after explicit authorization</td></tr>
+        <tr><td><span class="badge badge-p1">C8</span></td><td>Shareable medical summary</td><td>Expiring link for second-opinion; access logged</td></tr>
+        <tr><td><span class="badge badge-p1">C9</span></td><td>Lab result tracking</td><td>Manual upload first; auto-ingestion in Phase 3</td></tr>
+      </tbody>
+    </table>
+
+    <h3>7.4 Mandatory Enterprise Additions (Phase 2)</h3>
+    <ul>
+      <li>OTP login supports phone-number change and account recovery.</li>
+      <li>Caregiver relationships require explicit patient (or legal guardian) authorization and are fully revocable.</li>
+      <li>Share links have defined expiry, scope, and access logging.</li>
+      <li>Export supports PDF and FHIR-compatible records.</li>
+      <li>Low-literacy onboarding with simple language and optional voice guidance.</li>
+    </ul>
+  </section>
+
+  <!-- ==================== 8 PHASE 3 ==================== -->
+  <section id="s8">
+    <h2>8. Phase 3 — Secondary Care & Ecosystem</h2>
+    <p><span class="badge badge-phase3">24–36 months</span> · Unlocked after ≥500 clinics + Series A</p>
+
+    <h3>In Scope</h3>
+    <ul>
+      <li>Diagnostics routing with partner centres + structured result ingestion into DHR</li>
+      <li>Pharmacy recommendation / routing with transparent price comparison where feasible</li>
+      <li>Specialist appointment booking (near-time, rating-aware) with DHR pre-share</li>
+      <li>Deeper longitudinal trends (glucose, BP, weight) from structured observations</li>
+      <li>Optional ABHA linking for cross-clinic portability inside the network</li>
+    </ul>
+
+    <h3>Still Out of Scope</h3>
+    <ul>
+      <li>Home-visit doctor dispatch network</li>
+      <li>Full insurance claims engine</li>
+      <li>NFC hardware</li>
+      <li>ASHA / employer / insurer workflows</li>
+    </ul>
+  </section>
+
+  <!-- ==================== 9 PHASE 4 ==================== -->
+  <section id="s9">
+    <h2>9. Phase 4 — Tertiary Care & National Scale</h2>
+    <p><span class="badge badge-phase4">36–60 months</span> · Unlocked after ≥5,000 clinics + Series B</p>
+
+    <h3>In Scope (from original vision, correctly deferred)</h3>
+    <ul>
+      <li>Doctor-at-home / remote visit with GPS tracking</li>
+      <li>Assisted telemedicine facilitation (urban + rural)</li>
+      <li>Insurance claim facilitation (Indian + foreign patients)</li>
+      <li>Preventive screening &amp; elder-care / caregiver marketplace expansion</li>
+      <li>NFC health card + offline personal QR as hardware continuity layer</li>
+      <li>Foreign medical tourist corridor (verified pre-booking, language, record continuity)</li>
+      <li>ASHA network, employer, and insurer workflows</li>
+      <li>Hospital / super-specialist end-to-end packages</li>
+    </ul>
+
+    <div class="callout warning">
+      These capabilities remain deliberately out of Phase 1–3. Introducing them earlier destroys focus, capital efficiency, and the core clinic-adoption thesis.
+    </div>
+  </section>
+
+  <!-- ==================== 10 ==================== -->
+  <section id="s10">
+    <h2>10. Shared Data Model & Domain Entities</h2>
+
+    <h3>Core Entities (Required from Day 1)</h3>
+    <table>
+      <thead><tr><th>Entity</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>patients</td><td>Identity, demographics, contact, clinic relationships</td></tr>
+        <tr><td>doctors</td><td>NMC registration, verification status, speciality, language preferences</td></tr>
+        <tr><td>clinics</td><td>Clinic identity, plan, branding, settings</td></tr>
+        <tr><td>clinic_doctor_memberships</td><td>Multi-clinic relationships</td></tr>
+        <tr><td>appointments</td><td>Queue state and visit status</td></tr>
+        <tr><td>emr_records</td><td>Approved SOAP + patient_summary + authorship + timestamps</td></tr>
+        <tr><td>prescriptions</td><td>Structured medications linked to visit</td></tr>
+        <tr><td>observations</td><td>Structured vitals (FHIR Observation aligned)</td></tr>
+        <tr><td>billing_items + payments</td><td>Line items, settlement status</td></tr>
+        <tr><td>consent_management</td><td>Scope, status, effective dates, revocation</td></tr>
+        <tr><td>audit_logs</td><td>Every access and action</td></tr>
+        <tr><td>caregiver_relationships</td><td>Authorized links + scope</td></tr>
+        <tr><td>voice_recordings</td><td>Audio metadata + processing state</td></tr>
+        <tr><td>offline_sync_queue</td><td>Pending device events</td></tr>
+        <tr><td>notifications_log</td><td>Delivery history</td></tr>
+        <tr><td>record_versions</td><td>Immutability + addenda</td></tr>
+        <tr><td>subscriptions</td><td>Provider and consumer plan state</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Critical Data Rules</h3>
+    <ul>
+      <li>patient_summary must be generated synchronously at doctor approval.</li>
+      <li>Prescription is a first-class structured entity, not only free text inside SOAP.</li>
+      <li>Approved clinical content is immutable; changes only via versioned addendum.</li>
+      <li>Phone number is the primary patient identifier across both products.</li>
+    </ul>
+  </section>
+
+  <!-- ==================== 11 ==================== -->
+  <section id="s11">
+    <h2>11. AI System Requirements & Guardrails</h2>
+
+    <h3>AI Responsibilities</h3>
+    <ul>
+      <li>Transcribe multilingual consultation speech (Hindi, Marathi first)</li>
+      <li>Structure speech into SOAP sections</li>
+      <li>Generate plain-language patient_summary</li>
+      <li>Surface low-confidence segments for doctor review</li>
+    </ul>
+
+    <h3>Hard Guardrails (Non-Negotiable)</h3>
+    <div class="callout danger">
+      <ul style="margin:0 0 0 18px;">
+        <li>AI output is draft-only until approved by a registered doctor.</li>
+        <li>AI never diagnoses or finalizes treatment independently.</li>
+        <li>Patient-facing summaries are generated only from the approved record state.</li>
+        <li>Audio and text processing stay inside the approved privacy boundary.</li>
+      </ul>
+    </div>
+
+    <h3>Quality Targets</h3>
+    <ul>
+      <li>Draft generation 15–30 seconds</li>
+      <li>Doctor editing burden must remain lower than pure typing</li>
+      <li>Explicit testing in real Indian OPD noise and accent conditions required before pilot</li>
+    </ul>
+  </section>
+
+  <!-- ==================== 12 ==================== -->
+  <section id="s12">
+    <h2>12. Offline-First Architecture</h2>
+
+    <h3>Mandatory Offline Scope</h3>
+    <ul>
+      <li>Patient context from local cache</li>
+      <li>Voice recording buffer</li>
+      <li>SOAP draft queueing or local generation fallback</li>
+      <li>Clinical approval event creation</li>
+      <li>Bill event creation for later sync</li>
+      <li>Queue continuity on device</li>
+    </ul>
+
+    <h3>Architecture Rules</h3>
+    <ul>
+      <li>Local encrypted store on device</li>
+      <li>Event queue for all create/update operations</li>
+      <li>Deterministic conflict-resolution policy (never silent overwrite)</li>
+      <li>Chunked / resumable audio upload</li>
+      <li>Explicit offline badge and sync-status visibility</li>
+    </ul>
+  </section>
+
+  <!-- ==================== 13 ==================== -->
+  <section id="s13">
+    <h2>13. API Surface & Integrations</h2>
+
+    <h3>Internal Service Domains</h3>
+    <p>Authentication &amp; identity · Clinic &amp; doctor management · Patient · Consultation &amp; EMR · Prescription · Billing &amp; payments · Notification · Consent &amp; audit · Analytics · Integration gateway</p>
+
+    <h3>External Integrations</h3>
+    <table>
+      <thead><tr><th>Integration</th><th>Purpose</th><th>Phase</th></tr></thead>
+      <tbody>
+        <tr><td>Sarvam (or equivalent) STT/LLM</td><td>Transcription, structuring, multilingual generation</td><td>1</td></tr>
+        <tr><td>WhatsApp Business API</td><td>Prescription, receipt, reminder delivery</td><td>1</td></tr>
+        <tr><td>Payment gateway</td><td>Digital payment capture + settlement</td><td>1</td></tr>
+        <tr><td>ABDM / ABHA services</td><td>Optional identity linking + interoperability</td><td>2+</td></tr>
+        <tr><td>FHIR export service</td><td>Structured record portability</td><td>2</td></tr>
+        <tr><td>Diagnostics / pharmacy partners</td><td>Routing + result ingestion</td><td>3</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout warning">
+      Every integration requires full endpoint contracts, payload schemas, error states, retry rules, timeout behaviour, idempotency handling, rate limits, and audit expectations before implementation.
+    </div>
+  </section>
+
+  <!-- ==================== 14 ==================== -->
+  <section id="s14">
+    <h2>14. Security, Identity & Access Control</h2>
+    <ul>
+      <li>OTP login for doctors, front desk, and patients</li>
+      <li>Device registration + remote session revocation</li>
+      <li>Rate limiting on OTP and sensitive endpoints</li>
+      <li>Role-based access control (clinical vs administrative)</li>
+      <li>Shared-device auto-logout (30 min) + re-authentication for sensitive screens</li>
+      <li>Encryption in transit (TLS) and at rest</li>
+      <li>Encrypted local storage on mobile/tablet (including audio buffers)</li>
+      <li>Secrets management for all third-party keys</li>
+      <li>Full access logs so patients can query “who saw my data”</li>
+      <li>Consent scope enforced at service layer, not only in UI</li>
+      <li>Caregiver access bounded by explicit authorization and revocation</li>
+    </ul>
+  </section>
+
+  <!-- ==================== 15 ==================== -->
+  <section id="s15">
+    <h2>15. Compliance Requirements</h2>
+
+    <h3>DPDP Act 2023</h3>
+    <ul>
+      <li>Purpose-specific consent wording + explicit AI-processing disclosure</li>
+      <li>Data localization (AWS ap-south-1 or equivalent India region)</li>
+      <li>Right to access, correction, erasure, and consent withdrawal</li>
+      <li>Retention policy defined per data type</li>
+      <li>Documented incident-response and 72-hour breach notification process</li>
+    </ul>
+
+    <h3>Telemedicine Practice Guidelines</h3>
+    <ul>
+      <li>Only a Registered Medical Practitioner may prescribe</li>
+      <li>AI drafts; doctor must approve and sign</li>
+      <li>Prescription contains doctor name + registration number, patient identifiers, diagnosis, drug names (generic mandatory)</li>
+      <li>Records retained 7 years</li>
+    </ul>
+
+    <h3>CDSCO</h3>
+    <p>Doctor OS Lite expected Class A (information tool). Formal regulatory opinion recommended before first pilot.</p>
+
+    <h3>ABDM</h3>
+    <p>Optional ABHA linking only. Never forced. When linked, align with national consent manager.</p>
+  </section>
+
+  <!-- ==================== 16 ==================== -->
+  <section id="s16">
+    <h2>16. Business Model & Pricing</h2>
+
+    <h3>Provider Pricing (Directional — validate with ≥10 clinics)</h3>
+    <table>
+      <thead><tr><th>Plan</th><th>Monthly</th><th>Includes</th></tr></thead>
+      <tbody>
+        <tr><td>Solo Clinic</td><td>₹1,499</td><td>1 doctor + 1 front desk + P0–P1 + offline</td></tr>
+        <tr><td>Multi-Doctor</td><td>₹3,499</td><td>Up to 5 doctors + multi-clinic + shared records</td></tr>
+        <tr><td>Clinic Enterprise</td><td>₹6,999+</td><td>5+ doctors + priority support + analytics</td></tr>
+        <tr><td>14-day pilot</td><td>Free</td><td>Full features + quantified metrics</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Consumer Pricing (Phase 2 — Directional)</h3>
+    <table>
+      <thead><tr><th>Plan</th><th>Monthly</th><th>Includes</th></tr></thead>
+      <tbody>
+        <tr><td>Pocket Free</td><td>₹0</td><td>Visit summaries, prescription view, WhatsApp receipts</td></tr>
+        <tr><td>Pocket Plus</td><td>₹199</td><td>+ Reminders, history search, lab tracking</td></tr>
+        <tr><td>Pocket Family</td><td>₹499</td><td>+ Family management (up to 5), caregiver dashboard</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Revenue Streams by Phase</h3>
+    <ul>
+      <li>Phase 1: Clinic SaaS subscription (primary)</li>
+      <li>Phase 2: Pocket subscriptions</li>
+      <li>Phase 3: Diagnostics &amp; pharmacy routing commissions</li>
+      <li>Phase 4: Network monetization (insurers, employers) after density</li>
+    </ul>
+  </section>
+
+  <!-- ==================== 17 ==================== -->
+  <section id="s17">
+    <h2>17. Analytics & Success Metrics</h2>
+
+    <h3>Provider (Phase 1)</h3>
+    <table>
+      <thead><tr><th>Metric</th><th>Target</th></tr></thead>
+      <tbody>
+        <tr><td>Documentation time reduction</td><td>≥ 20 min / OPD</td></tr>
+        <tr><td>Same-day note completion</td><td>≥ 80%</td></tr>
+        <tr><td>Billing closure rate</td><td>≥ 90%</td></tr>
+        <tr><td>Doctor daily active</td><td>≥ 70% of days</td></tr>
+        <tr><td>Paid continuation (first 5 clinics)</td><td>≥ 3</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Consumer (Phase 2)</h3>
+    <ul>
+      <li>Prescription open rate</li>
+      <li>Reminder adherence completion rate</li>
+      <li>Pocket activation after WhatsApp exposure</li>
+      <li>Caregiver-linked account rate</li>
+      <li>Record revisit frequency</li>
+      <li>Follow-up reminder → actual visit conversion</li>
+    </ul>
+  </section>
+
+  <!-- ==================== 18 ==================== -->
+  <section id="s18">
+    <h2>18. Non-Functional Requirements</h2>
+    <table>
+      <thead><tr><th>Area</th><th>Requirement</th></tr></thead>
+      <tbody>
+        <tr><td>Performance</td><td>Patient context &lt; 2 s; search &lt; 1 s; bill creation &lt; 2 s</td></tr>
+        <tr><td>Reliability</td><td>Core provider loop fully usable offline</td></tr>
+        <tr><td>Scalability</td><td>Support clinic-cluster rollout then multi-city without rewrite</td></tr>
+        <tr><td>Observability</td><td>Logs, metrics, traces, sync failures, AI-processing failures</td></tr>
+        <tr><td>Maintainability</td><td>Shared models between provider and consumer with clean domain boundaries</td></tr>
+        <tr><td>Localization</td><td>Hindi + Marathi first; extensible language architecture</td></tr>
+        <tr><td>Accessibility</td><td>Touch targets ≥ 44 px; no hover dependency; color not sole status indicator</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ==================== 19 ==================== -->
+  <section id="s19">
+    <h2>19. Risk Register</h2>
+    <table>
+      <thead>
+        <tr><th>Risk</th><th>Severity</th><th>Mitigation</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Offline conflict rules missing → data corruption</td>
+          <td><span class="badge badge-critical">Critical</span></td>
+          <td>Define deterministic conflict policy before coding</td>
+        </tr>
+        <tr>
+          <td>AI draft quality insufficient</td>
+          <td><span class="badge badge-critical">Critical</span></td>
+          <td>Domain fine-tuning + real OPD noise testing + confidence rules</td>
+        </tr>
+        <tr>
+          <td>Consent only in UI → DPDP failure</td>
+          <td><span class="badge badge-critical">Critical</span></td>
+          <td>Enforce consent at service/API layer</td>
+        </tr>
+        <tr>
+          <td>Clinic software abandonment</td>
+          <td><span class="badge badge-high">High</span></td>
+          <td>14-day pilot + founder on-site first 3 days + voice-first low learning cost</td>
+        </tr>
+        <tr>
+          <td>Phase 1 density insufficient → Phase 2 delayed</td>
+          <td><span class="badge badge-high">High</span></td>
+          <td>Hard gate of 50 retained clinics</td>
+        </tr>
+        <tr>
+          <td>Caregiver authorization complexity</td>
+          <td><span class="badge badge-med">Medium</span></td>
+          <td>Start with max 2 family members; expand later</td>
+        </tr>
+        <tr>
+          <td>Consumer willingness to pay low</td>
+          <td><span class="badge badge-med">Medium</span></td>
+          <td>Generous free tier; paid features are incremental</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ==================== 20 ==================== -->
+  <section id="s20">
+    <h2>20. Implementation Order & Companion Documents</h2>
+
+    <h3>Immediate Implementation Sequence</h3>
+    <ol>
+      <li>Lock domain model + ERD + consent service design</li>
+      <li>Define offline event model and conflict policy</li>
+      <li>Write AI model card + guardrail policy</li>
+      <li>Produce OpenAPI contracts for core consultation-to-billing loop</li>
+      <li>Implement doctor onboarding + NMC verification gate</li>
+      <li>Build F1–F6 (core provider loop) with offline support</li>
+      <li>Front-desk registration, queue, billing, WhatsApp delivery</li>
+      <li>Full audit logging + patient-facing access history</li>
+      <li>Pilot instrumentation against 14-day success metrics</li>
+      <li>Only after ≥50 retained clinics → Pocket consumer surfaces</li>
+    </ol>
+
+    <h3>Required Companion Documents (Must Exist Before Build)</h3>
+    <ol>
+      <li>OpenAPI contract specification</li>
+      <li>Database ERD and schema dictionary</li>
+      <li>Consent management specification</li>
+      <li>Security architecture and threat model</li>
+      <li>Offline sync architecture specification</li>
+      <li>AI model card and guardrail policy</li>
+      <li>QA acceptance matrix and edge-case test suite</li>
+      <li>Service blueprint and detailed journey maps</li>
+      <li>Figma information architecture and screen flow pack</li>
+      <li>Delivery roadmap with sprint sequencing</li>
+    </ol>
+  </section>
+
+  <!-- ==================== 21 ==================== -->
+  <section id="s21">
+    <h2>21. Completeness Score & Unified Recommendation</h2>
+
+    <div class="score-box">
+      <div class="score-number">68</div>
+      <div>
+        <div style="font-size:18px;font-weight:600;">/ 100</div>
+        <div class="score-label">Current Product Completeness Score</div>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>Area</th><th>Score</th></tr></thead>
+      <tbody>
+        <tr><td>Product strategy &amp; user insight</td><td>92</td></tr>
+        <tr><td>Functional scope (happy path)</td><td>78</td></tr>
+        <tr><td>Data model &amp; shared contract</td><td>55</td></tr>
+        <tr><td>Offline &amp; resilience</td><td>40</td></tr>
+        <tr><td>Security &amp; compliance operationalization</td><td>45</td></tr>
+        <tr><td>AI safety specification</td><td>50</td></tr>
+        <tr><td>API &amp; integration contracts</td><td>25</td></tr>
+        <tr><td>Edge cases &amp; failure modes</td><td>35</td></tr>
+        <tr><td>Analytics &amp; commercial rules</td><td>70</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Unified Recommendation</h3>
+    <div class="callout success">
+      <p><strong>The current PRDs already contain a strong, differentiated product thesis focused on independent clinics.</strong></p>
+      <p>The original multi-service vision (video + home visit + in-clinic + ePharmacy + labs + hospitals + insurance + NFC + foreign corridor) is correctly sequenced into later phases and must stay there.</p>
+      <p><strong>Do not expand scope. Do not start broad engineering.</strong></p>
+      <p>Immediately produce, in this order:</p>
+      <ol style="margin:8px 0 0 18px;">
+        <li>Offline sync architecture</li>
+        <li>Consent management specification</li>
+        <li>AI model card + guardrails</li>
+        <li>Database ERD + schema dictionary</li>
+        <li>OpenAPI contracts for the core loop</li>
+      </ol>
+      <p style="margin-top:10px;">Only after these five documents are reviewed and signed off should sprint planning and implementation begin.</p>
+      <p>WeCare LIFES is a healthcare coordination platform for small-clinic India. Its success depends on operational completeness, not additional features.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <p><strong>WeCare LIFES — Complete Enterprise Product Requirements Document</strong></p>
+    <p>Doctor OS Lite · WeCare Pocket · Versions 1–4 Phase Coverage</p>
+    <p>v3.0 Complete Enterprise · 31 July 2026 · citrus</p>
+    <p style="margin-top:10px;">This document is the single source of truth. All prior Provider, Consumer, and Enterprise drafts are superseded by this consolidated specification for planning and implementation purposes.</p>
+  </div>
+
+</div>
+</body>
+</html>

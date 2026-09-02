@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "CuraLives",
+      "hasCanvas": false,
+      "bodyTextLen": 5072,
+      "bodyTextHash": "6e3ce5abe282b65c7e6ddf6799376312b7cb20607a536f1a9b8be09603834267",
+      "bodyTextPrefix": "CuraLives For Doctors For Patients NFC & QR Pricing Insights Get",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "CuraLives",
+      "hasCanvas": false,
+      "bodyTextLen": 4997,
+      "bodyTextHash": "d55d036595ccb5ecbd69a15774bda24b7e1ae7c94029d325c6c82f38050352b4",
+      "bodyTextPrefix": "CuraLives HEALTHCARE CONTINUITY LAYER Your clinic. Prepared, and",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}
