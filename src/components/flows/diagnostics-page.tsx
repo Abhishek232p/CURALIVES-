@@ -198,21 +198,12 @@ function Switch({
 }
 
 export function DiagnosticsPage() {
-  const {
-    labs,
-    diagnosticOrders,
-    diagnosticTests,
-    currentUserId,
-    scheduleDiagnostic,
-    updateDiagnosticStatus,
-  } = useCuraLivesStore((s) => ({
-    labs: s.labs,
-    diagnosticOrders: s.diagnosticOrders,
-    diagnosticTests: s.diagnosticTests,
-    currentUserId: s.currentUserId,
-    scheduleDiagnostic: s.scheduleDiagnostic,
-    updateDiagnosticStatus: s.updateDiagnosticStatus,
-  }));
+  const labs = useCuraLivesStore((s) => s.labs);
+  const diagnosticOrders = useCuraLivesStore((s) => s.diagnosticOrders);
+  const diagnosticTests = useCuraLivesStore((s) => s.diagnosticTests);
+  const currentUserId = useCuraLivesStore((s) => s.currentUserId);
+  const scheduleDiagnostic = useCuraLivesStore((s) => s.scheduleDiagnostic);
+  const updateDiagnosticStatus = useCuraLivesStore((s) => s.updateDiagnosticStatus);
 
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);

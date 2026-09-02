@@ -25,10 +25,8 @@ const ROLES = [
 ] as const;
 
 export function RoleSwitcher({ size = "sm" }: { size?: "sm" | "md" }) {
-  const { currentRole, switchRole } = useCuraLivesStore((s: any) => ({
-    currentRole: s.currentRole,
-    switchRole: s.switchRole,
-  }));
+  const currentRole = useCuraLivesStore((s: any) => s.currentRole);
+  const switchRole = useCuraLivesStore((s: any) => s.switchRole);
 
   return (
     <div
